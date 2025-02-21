@@ -1,11 +1,16 @@
 const Categories = require("./model");
-const { findById } = require("./model");
+const {
+  getAllCategories,
+  createCategories,
+  getOneCategories,
+  updateCategories,
+  deleteCategories,
+} = require("../../../services/mongoose/categories");
 
 const create = async (req, res, next) => {
   try {
-    const { name } = req.body;
-    const result = await Categories.create({ name });
-    res.status(201).json({
+    const result = await createCategories(req);
+    res.status(200).json({
       data: result,
     });
   } catch (err) {
@@ -15,7 +20,7 @@ const create = async (req, res, next) => {
 
 const index = async (req, res, next) => {
   try {
-    const result = await Categories.find();
+    const result = await getAllCategories();
     res.status(200).json({
       data: result,
     });

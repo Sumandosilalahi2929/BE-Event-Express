@@ -27,4 +27,7 @@ app.get("/", (req, res) => {
 
 app.use(v1, categoriesRouter);
 
+app.use(notFoundMiddleware);
+app.use(handleErrorMiddleware);
+
 module.exports = app;
