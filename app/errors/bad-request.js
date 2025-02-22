@@ -7,7 +7,7 @@ class BadRequest extends CustomAPIError {
   constructor(message) {
     super(message);
     //memberikan statusCode bad request
-    this.StatusCode = StatusCodes.BAD_REQUEST;
+    this.statusCode = StatusCodes.BAD_REQUEST;
   }
 }
 module.exports = BadRequest;
