@@ -13,9 +13,9 @@ let talentSchema = Schema(
     },
 
     //untuk membuat relasi pada mongodb kita perlu membuat types objectId
-    Image: {
+    image: {
       type: mongoose.Types.ObjectId,
-      ref: "image",
+      ref: "Image",
       required: true,
     },
   },

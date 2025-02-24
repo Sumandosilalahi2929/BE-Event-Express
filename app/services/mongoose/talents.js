@@ -1,5 +1,5 @@
 const Talents = require("../../api/v1/talents/model");
-const { checkImage } = require("./images");
+const { checkingImage } = require("./images");
 
 //import custom error not found and bad request
 const { NotFoundError } = require("../../errors");
@@ -27,7 +27,7 @@ const createTalents = async (req) => {
   const { name, role, image } = req.body;
 
   //cari image dengan field image
-  await checkImage(image);
+  await checkingImage(image);
 
   //cari telents dengan field name
   const check = await Talents.findOne({ name });
@@ -42,11 +42,12 @@ const createTalents = async (req) => {
 const getOneTalents = async (req) => {
   const { id } = req.params;
 
-  const result = await Talents.findOne({ _id: id });
-  populate({
-    path: "image",
-    select: "_id name",
-  }).select("_id name role image");
+  const result = await Talents.findOne({ _id: id })
+    .populate({
+      path: "image",
+      select: "_id name",
+    })
+    .select("_id name role image");
 
   if (!result) throw new NotFoundError(`Tidak ada pembicara dengan id : ${id}`);
 
@@ -57,37 +58,38 @@ const updateTalents = async (req) => {
   const { id } = req.params;
   const { name, image, role } = req.body;
 
-  //cari image dengan field name
-  await checkingImage(image);
+  // Cek apakah image tersedia, jika ada baru diperiksa
+  if (image) {
+    await checkingImage(image);
+  }
 
-  //cari talents dengan field name = id selain dari yang dikirim dari params
+  // Cek apakah nama pembicara sudah ada selain ID yang sedang diupdate
   const check = await Talents.findOne({
     name,
     _id: { $ne: id },
   });
 
-  //apabila check true/ data talents sudah ada maka kita tampilkan error bad request dengan messaage pembicara nama duplikat
-  if (check) throw new BadRequest("pembicara nama duplikat");
+  if (check) throw new BadRequest("Pembicara dengan nama tersebut sudah ada.");
 
-  const result = await Talents.findOneAndUpdate(
-    { _id: id },
+  // Update data pembicara
+  const result = await Talents.findByIdAndUpdate(
+    id,
     { name, image, role },
-    { new: true, runvalidators: true }
-  );
+    { new: true, runValidators: true }
+  ).select("_id name role image");
 
-  //jika id result false/null maka menampilkan error `Tidak ada pembicara dengan id` yang dikirim ke client
-  if (!result) throw new NotFoundError(`Tidak ada pembicara dengan id : ${id}`);
+  if (!result) throw new NotFoundError(`Tidak ada pembicara dengan id: ${id}`);
+
   return result;
 };
 
 const deleteTalents = async (req) => {
   const { id } = req.params;
-  const result = await Talents.findOne({
-    _id: id,
-  });
 
-  if (!result) throw new NotFoundError(`Tidak ad pembicara dengan id: ${id}`);
-  await result.remove();
+  const result = await Talents.findByIdAndDelete(id);
+
+  if (!result) throw new NotFoundError(`Tidak ada pembicara dengan id: ${id}`);
+
   return result;
 };
 

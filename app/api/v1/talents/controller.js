@@ -20,7 +20,7 @@ const create = async (req, res, next) => {
 
 const index = async (req, res, next) => {
   try {
-    const result = await getAllTalents();
+    const result = await getAllTalents(req);
     res.status(StatusCodes.OK).json({
       data: result,
     });
