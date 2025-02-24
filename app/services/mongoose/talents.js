@@ -2,8 +2,7 @@ const Talents = require("../../api/v1/talents/model");
 const { checkingImage } = require("./images");
 
 //import custom error not found and bad request
-const { NotFoundError } = require("../../errors");
-const BadRequest = require("../../errors/bad-request");
+const { NotFoundError, BadRequestError } = require("../../errors");
 const { populate } = require("dotenv");
 
 const getAllTalents = async (req) => {
@@ -33,7 +32,7 @@ const createTalents = async (req) => {
   const check = await Talents.findOne({ name });
 
   //apabila check true/ data talents sudah ada maka kita tampilkan error bad request dengan message pembicara duplikat
-  if (check) throw new BadRequest("pembicara sudah terdaftar");
+  if (check) throw new BadRequestError("pembicara sudah terdaftar");
 
   const result = await Talents.create({ name, image, role });
   return result;
@@ -69,7 +68,8 @@ const updateTalents = async (req) => {
     _id: { $ne: id },
   });
 
-  if (check) throw new BadRequest("Pembicara dengan nama tersebut sudah ada.");
+  if (check)
+    throw new BadRequestError("Pembicara dengan nama tersebut sudah ada.");
 
   // Update data pembicara
   const result = await Talents.findByIdAndUpdate(
