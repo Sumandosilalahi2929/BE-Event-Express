@@ -1,4 +1,5 @@
 const Images = require("../../api/v1/images/model");
+const NotFound = require("../../middlewares/not-found");
 
 // ada 2 cara generate gambar
 // 1.kita gunain cara ini
@@ -20,4 +21,13 @@ const createImages = async (req) => {
   return result;
 };
 
-module.exports = { createImages, generateUrlImage };
+//tambahkan function checking Image
+const chekingImage = async (id) => {
+  const result = await Images.findOne({ _id: id });
+  console.log(result);
+
+  if (!result) throw new NotFound(`Tidak ada gambar dengan id : ${id}`);
+  return result;
+};
+
+module.exports = { createImages, generateUrlImage, chekingImage };
