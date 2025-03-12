@@ -13,8 +13,9 @@ const ImagesRouter = require("./app/api/v1/images/router");
 const organizerRouter = require("./app/api/v1/organizers/router");
 const authCMSRouter = require("./app/api/v1/auth/router");
 const ordersRouter = require("./app/api/v1/orders/router");
+const participantsRouter = require("./app/api/v1/participants/router");
 //router
-const v1 = "/api/v1/cms";
+const v1 = "/api/v1";
 
 const notFoundMiddleware = require("./app/middlewares/not-found");
 
@@ -32,13 +33,14 @@ app.get("/", (req, res) => {
   });
 });
 
-app.use(v1, categoriesRouter);
-app.use(v1, ImagesRouter);
-app.use(v1, talentsRouter);
-app.use(v1, eventsRouter);
-app.use(v1, organizerRouter);
-app.use(v1, authCMSRouter);
-app.use(v1, ordersRouter);
+app.use(`${v1}/cms`, categoriesRouter);
+app.use(`${v1}/cms`, ImagesRouter);
+app.use(`${v1}/cms`, talentsRouter);
+app.use(`${v1}/cms`, eventsRouter);
+app.use(`${v1}/cms`, organizerRouter);
+app.use(`${v1}/cms`, authCMSRouter);
+app.use(`${v1}/cms`, ordersRouter);
+app.use(`${v1}`, participantsRouter);
 
 app.use(notFoundMiddleware);
 app.use(handleErrorMiddleware);

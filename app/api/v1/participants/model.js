@@ -5,7 +5,7 @@ const participantSchema = new mongoose.Schema(
   {
     firstName: {
       type: String,
-      required: [true, "Nama Depan harus diisi"],
+      required: [true, "Nama depan harus diisi"],
       minlength: 3,
       maxlength: 50,
     },
@@ -20,6 +20,7 @@ const participantSchema = new mongoose.Schema(
     password: {
       type: String,
       required: [true, "Password harus diisi"],
+      minlength: 6,
     },
     role: {
       type: String,
@@ -28,6 +29,7 @@ const participantSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: ["aktif", "tidak aktif"],
+      default: "tidak aktif",
     },
     otp: {
       type: String,
@@ -40,7 +42,7 @@ const participantSchema = new mongoose.Schema(
 participantSchema.pre("save", async function (next) {
   const User = this;
   if (User.isModified("password")) {
-    User.password = await bcrypt.hash(user.password, 12);
+    User.password = await bcrypt.hash(User.password, 12);
   }
   next();
 });
