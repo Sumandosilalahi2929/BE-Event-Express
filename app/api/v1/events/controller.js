@@ -5,6 +5,7 @@ const {
   getOneEvents,
   updateEvents,
   deleteEvents,
+  changeStatusEvents,
 } = require("../../../services/mongoose/event");
 
 const create = async (req, res, next) => {
@@ -63,10 +64,23 @@ const destroy = async (req, res, next) => {
   }
 };
 
+const changeStatus = async (req, res, next) => {
+  try {
+    const result = await changeStatusEvents(req);
+
+    res.status(StatusCodes.OK).json({
+      data: result,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   index,
   find,
   create,
   update,
   destroy,
+  changeStatus,
 };

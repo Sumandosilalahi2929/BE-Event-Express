@@ -16,6 +16,7 @@ const ticketCategoriesSchema = new mongoose.Schema({
   statusTicketCategories: {
     type: Boolean,
     enum: [true, false],
+    default: true,
   },
   expired: {
     type: Date,
@@ -26,7 +27,7 @@ const EventSchema = new mongoose.Schema(
   {
     title: {
       type: String,
-      required: [true, "judul harus diisi"],
+      required: [true, "Judul harus diisi"],
       minlength: 3,
       maxlength: 50,
     },
@@ -42,9 +43,13 @@ const EventSchema = new mongoose.Schema(
       required: [true, "Tagline harus diisi"],
     },
     keyPoint: {
-      type: String,
+      type: [String],
     },
     venueName: {
+      type: String,
+      required: [true, "Tempat acara harus diisi"],
+    },
+    statusEvent: {
       type: String,
       enum: ["Draft", "Published"],
       default: "Draft",
