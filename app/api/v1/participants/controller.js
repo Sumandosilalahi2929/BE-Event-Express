@@ -2,6 +2,8 @@ const {
   signupParticipant,
   activateParticipant,
   signinParticipant,
+  getAllEvents,
+  getOneEvent,
 } = require("../../../services/mongoose/participants");
 const { StatusCodes } = require("http-status-codes");
 
@@ -41,4 +43,70 @@ const signin = async (req, res, next) => {
   }
 };
 
-module.exports = { signup, activeParticipant, signin };
+const getAllLandingPage = async (req, res, next) => {
+  try {
+    const result = await getAllEvents(req);
+
+    res.status(StatusCodes.OK).json({
+      data: result,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const getDashboard = async (req, res, next) => {
+  try {
+    const result = await getAllOrders(req);
+
+    res.status(StatusCodes.OK).json({
+      data: result,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const getDetailLandingPage = async (req, res, next) => {
+  try {
+    const result = await getOneEvent(req);
+
+    res.status(StatusCodes.OK).json({
+      data: result,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const getAllPayment = async (req, res, next) => {
+  try {
+    const result = await getAllPaymentByOrganizer(req);
+
+    res.status(StatusCodes.OK).json({
+      data: result,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const checkout = async (req, res, next) => {
+  try {
+    const result = await checkoutOrder(req);
+
+    res.status(StatusCodes.CREATED).json({
+      data: result,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = {
+  signup,
+  activeParticipant,
+  signin,
+  getAllLandingPage,
+  getDetailLandingPage,
+};

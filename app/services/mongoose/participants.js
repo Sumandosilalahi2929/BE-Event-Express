@@ -1,5 +1,5 @@
 const Participant = require("../../api/v1/participants/model");
-
+const Events = require("../../api/v1/events/model");
 const {
   BadRequestError,
   NotFoundError,
