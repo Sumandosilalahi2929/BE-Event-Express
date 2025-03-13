@@ -4,7 +4,9 @@ const {
   signinParticipant,
   getAllEvents,
   getOneEvent,
+  getAllOrders,
 } = require("../../../services/mongoose/participants");
+
 const { StatusCodes } = require("http-status-codes");
 
 const signup = async (req, res, next) => {
@@ -109,4 +111,5 @@ module.exports = {
   signin,
   getAllLandingPage,
   getDetailLandingPage,
+  getDashboard,
 };
