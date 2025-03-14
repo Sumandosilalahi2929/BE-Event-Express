@@ -1,7 +1,7 @@
 const Participant = require("../../api/v1/participants/model");
 const Events = require("../../api/v1/events/model");
 const Orders = require("../../api/v1/orders/model");
-// const Payments = require("../../api/v1/payments/model");
+const Payments = require("../../api/v1/payments/model");
 
 const {
   BadRequestError,
@@ -125,10 +125,6 @@ const getAllOrders = async (req) => {
   return result;
 };
 
-/**
- * Tugas Send email invoice
- * TODO: Ambil data email dari personal detail
- *  */
 const checkoutOrder = async (req) => {
   const { event, personalDetail, payment, tickets } = req.body;
 
@@ -209,4 +205,5 @@ module.exports = {
   getAllEvents,
   getOneEvent,
   getAllOrders,
+  checkoutOrder,
 };

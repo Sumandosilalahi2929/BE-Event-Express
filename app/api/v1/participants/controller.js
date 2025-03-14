@@ -5,6 +5,7 @@ const {
   getAllEvents,
   getOneEvent,
   getAllOrders,
+  checkoutOrder,
 } = require("../../../services/mongoose/participants");
 
 const { StatusCodes } = require("http-status-codes");
@@ -95,6 +96,7 @@ const getAllPayment = async (req, res, next) => {
 
 const checkout = async (req, res, next) => {
   try {
+    console.log(req.body);
     const result = await checkoutOrder(req);
 
     res.status(StatusCodes.CREATED).json({
@@ -112,4 +114,5 @@ module.exports = {
   getAllLandingPage,
   getDetailLandingPage,
   getDashboard,
+  checkout,
 };
