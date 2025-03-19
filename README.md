@@ -54,12 +54,3 @@ npm install nodemailer mustache
 | `npm run dev` | Jalankan server dengan nodemon |
 
 ---
-
-## 💎 Kontak
-
-Jika ada pertanyaan atau kontribusi, hubungi:
-
-- **Nama**: Sumando Silalahi
-- **Email**: [sumandosilalahi21@gmail.com](mailto:sumandosilalahi21@gmail.com)
-
-🚀 Selamat coding! 🎉
