@@ -82,15 +82,13 @@ const updatePayments = async (req) => {
 const deletePayments = async (req) => {
   const { id } = req.params;
 
-  const result = await Payments.findOne({
+  const result = await Payments.findOneAndDelete({
     _id: id,
     organizer: req.user.organizer,
   });
 
   if (!result)
     throw new NotFoundError(`Tidak ada tipe pembayaran dengan id :  ${id}`);
-
-  await result.remove();
 
   return result;
 };
