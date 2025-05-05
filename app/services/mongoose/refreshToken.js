@@ -30,4 +30,7 @@ const getUserRefreshToken = async (req) => {
   return token;
 };
 
-module.exports = { createUserRefreshToken, getUserRefreshToken };
+module.exports = {
+  createUserRefreshToken,
+  getUserRefreshToken,
+};

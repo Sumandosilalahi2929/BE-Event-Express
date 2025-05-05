@@ -9,7 +9,7 @@ const {
 router.get(
   "/refresh-token/:refreshToken",
   // authenticateUser,
-  // authorizeRoles('organizer', 'admin', 'owner'),
+  // authorizeRoles("organizer", "admin", "owner"),
   index
 );
 
