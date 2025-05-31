@@ -16,7 +16,6 @@ const {
 
 router.get("/events", authenticateUser, authorizeRoles("organizer"), index);
 router.get("/events/:id", authenticateUser, authorizeRoles("organizer"), find);
-router.post("/events", authenticateUser, authorizeRoles("organizer"), create);
 router.put(
   "/events/:id",
   authenticateUser,
@@ -29,6 +28,7 @@ router.delete(
   authorizeRoles("organizer"),
   destroy
 );
+router.post("/events", authenticateUser, authorizeRoles("organizer"), create);
 
 router.put(
   "/events/:id/status",
@@ -36,4 +36,5 @@ router.put(
   authorizeRoles("organizer"),
   changeStatus
 );
+
 module.exports = router;

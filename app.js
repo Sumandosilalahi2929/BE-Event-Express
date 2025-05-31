@@ -10,7 +10,7 @@ const app = express();
 const categoriesRouter = require("./app/api/v1/categories/router");
 const talentsRouter = require("./app/api/v1/talents/router");
 const eventsRouter = require("./app/api/v1/events/router");
-const ImagesRouter = require("./app/api/v1/images/router");
+const imagesRouter = require("./app/api/v1/images/router");
 const organizerRouter = require("./app/api/v1/organizers/router");
 const authCMSRouter = require("./app/api/v1/auth/router");
 const ordersRouter = require("./app/api/v1/orders/router");
@@ -23,7 +23,7 @@ const v1 = "/api/v1";
 
 const notFoundMiddleware = require("./app/middlewares/not-found");
 
-const handleErrorMiddleware = require("./app/middlewares/handle-error");
+const handleErrorMiddleware = require("./app/middlewares/handler-error");
 
 app.use(cors());
 app.use(logger("dev"));
@@ -39,7 +39,7 @@ app.get("/", (req, res) => {
 });
 
 app.use(`${v1}/cms`, categoriesRouter);
-app.use(`${v1}/cms`, ImagesRouter);
+app.use(`${v1}/cms`, imagesRouter);
 app.use(`${v1}/cms`, talentsRouter);
 app.use(`${v1}/cms`, eventsRouter);
 app.use(`${v1}/cms`, organizerRouter);

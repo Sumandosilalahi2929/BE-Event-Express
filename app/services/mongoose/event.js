@@ -4,7 +4,7 @@ const { checkingImage } = require("./images");
 const { checkingCategories } = require("./categories");
 const { checkingTalents } = require("./talents");
 
-//import custom error not found dan bad request
+// import custom error not found dan bad request
 const { NotFoundError, BadRequestError } = require("../../errors");
 
 const getAllEvents = async (req) => {
@@ -60,8 +60,11 @@ const createEvents = async (req) => {
     talent,
   } = req.body;
 
+  const imageId =
+    typeof image === "object" && image !== null ? image._id : image;
+
   // cari image, category dan talent dengan field id
-  await checkingImage(image);
+  await checkingImage(imageId);
   await checkingCategories(category);
   await checkingTalents(talent);
 
@@ -80,7 +83,7 @@ const createEvents = async (req) => {
     keyPoint,
     statusEvent,
     tickets,
-    image,
+    image: imageId,
     category,
     talent,
     organizer: req.user.organizer,
@@ -197,16 +200,20 @@ const changeStatusEvents = async (req) => {
     throw new BadRequestError("Status harus Draft atau Published");
   }
 
-  //cari event berdasarkan field id
+  // cari event berdasarkan field id
   const checkEvent = await Events.findOne({
     _id: id,
     organizer: req.user.organizer,
   });
 
-  //jika id result false/null maka akan menampilkan error
-  if (!checkEvent) throw new NotFoundError(`Tidak ada acara dengan id: ${id}`);
+  // jika id result false / null maka akan menampilkan error `Tidak ada acara dengan id` yang dikirim client
+  if (!checkEvent)
+    throw new NotFoundError(`Tidak ada acara dengan id :  ${id}`);
+
   checkEvent.statusEvent = statusEvent;
+
   await checkEvent.save();
+
   return checkEvent;
 };
 

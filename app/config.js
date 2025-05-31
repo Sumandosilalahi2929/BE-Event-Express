@@ -3,10 +3,10 @@ dotenv.config();
 
 module.exports = {
   urlDb: process.env.URL_MONGODB_DEV,
-  jwtSecret: process.env.JWT_SECRET,
   jwtExpiration: process.env.JWT_EXPIRATION,
-  jwtRefreshTokenSecret: process.env.JWT_SECRET_KEY_REFRESH_TOKEN,
+  jwtSecret: process.env.JWT_SECRET,
   jwtRefreshTokenExpiration: process.env.JWT_EXPIRATION_REFRESH_TOKEN,
+  jwtRefreshTokenSecret: process.env.JWT_SECRET_KEY_REFRESH_TOKEN,
   gmail: process.env.GMAIL,
   password: process.env.GMAIL_PASSWORD,
 };

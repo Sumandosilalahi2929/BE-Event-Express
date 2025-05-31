@@ -18,10 +18,12 @@ const fileFilter = (req, file, cb) => {
     cb(null, true);
   } else {
     //reject file
-    cb({
-      message: "Unsupported file format",
-    });
-    false;
+    cb(
+      {
+        message: "Unsupported file format",
+      },
+      false
+    );
   }
 };
 

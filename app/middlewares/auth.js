@@ -48,7 +48,6 @@ const authenticateParticipant = async (req, res, next) => {
 
     const payload = isTokenValid({ token });
 
-    // Attach the user and his permissions to the req object
     req.participant = {
       email: payload.email,
       lastName: payload.lastName,

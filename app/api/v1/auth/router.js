@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express();
-const { signinCms } = require("../auth/controller");
+const { signinCms } = require("./controller");
 
 router.post("/auth/signin", signinCms);
 

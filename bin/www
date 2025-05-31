@@ -5,7 +5,7 @@
  */
 
 const app = require("../app");
-const debug = require("debug")("server-event:server");
+const debug = require("debug")("server-semina-bootcamp-2:server");
 const http = require("http");
 const db = require("../app/db");
 
@@ -20,9 +20,8 @@ app.set("port", port);
  * Create HTTP server.
  */
 
-//bila terjadi error
 db.on("error", function (err) {
-  console.log("connecction error: tidak bisa tersambung ke mongodb");
+  console.log("connection error: tidak bisa tersambung ke mongodb");
 });
 
 const server = http.createServer(app);
@@ -30,7 +29,6 @@ const server = http.createServer(app);
 /**
  * Listen on provided port, on all network interfaces.
  */
-
 db.on("open", function () {
   server.listen(port);
   server.on("error", onError);
