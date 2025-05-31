@@ -102,12 +102,13 @@ const deleteTalents = async (req) => {
   return result;
 };
 
-const checkingTalents = async (id) => {
+// PERBAIKAN: Tambahkan parameter organizer
+const checkingTalents = async (id, organizer) => {
   const result = await Talents.findOne({
     _id: id,
-    organizer: req.user.organizer,
+    organizer: organizer, // ✅ Gunakan parameter organizer
   });
-  if (!result) throw new NotFoundError(`Tidak ad pembicara dengan id: ${id}`);
+  if (!result) throw new NotFoundError(`Tidak ada pembicara dengan id: ${id}`);
 
   return result;
 };

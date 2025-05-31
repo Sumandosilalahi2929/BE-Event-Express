@@ -10,7 +10,6 @@ const {
 const { StatusCodes } = require("http-status-codes");
 
 const create = async (req, res, next) => {
-  console.log(req.body);
   try {
     const result = await createEvents(req);
     res.status(StatusCodes.CREATED).json({

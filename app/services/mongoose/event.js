@@ -46,50 +46,83 @@ const getAllEvents = async (req) => {
 };
 
 const createEvents = async (req) => {
-  const {
-    title,
-    date,
-    about,
-    tagline,
-    venueName,
-    keyPoint,
-    statusEvent,
-    tickets,
-    image,
-    category,
-    talent,
-  } = req.body;
+  try {
+    console.log("createEvents - Start");
 
-  const imageId =
-    typeof image === "object" && image !== null ? image._id : image;
+    const {
+      title,
+      date,
+      about,
+      tagline,
+      venueName,
+      keyPoint,
+      statusEvent,
+      tickets,
+      image,
+      category,
+      talent,
+    } = req.body;
 
-  // cari image, category dan talent dengan field id
-  await checkingImage(imageId);
-  await checkingCategories(category);
-  await checkingTalents(talent);
+    console.log("createEvents - After destructuring");
 
-  // cari Events dengan field name
-  const check = await Events.findOne({ title });
+    const imageId =
+      typeof image === "object" && image !== null && image._id
+        ? image._id
+        : image;
 
-  // apa bila check true / data Events sudah ada maka kita tampilkan error bad request dengan message judul acara sudah terdaftar
-  if (check) throw new BadRequestError("judul acara sudah terdaftar");
+    console.log("createEvents - imageId:", imageId);
 
-  const result = await Events.create({
-    title,
-    date,
-    about,
-    tagline,
-    venueName,
-    keyPoint,
-    statusEvent,
-    tickets,
-    image: imageId,
-    category,
-    talent,
-    organizer: req.user.organizer,
-  });
+    // Debug: Check if functions exist
+    console.log("checkingImage function:", typeof checkingImage);
+    console.log("checkingCategories function:", typeof checkingCategories);
+    console.log("checkingTalents function:", typeof checkingTalents);
 
-  return result;
+    // cari image, category dan talent dengan field id
+    console.log("createEvents - Before checkingImage");
+    await checkingImage(imageId);
+    console.log("createEvents - After checkingImage");
+
+    console.log("createEvents - Before checkingCategories");
+    await checkingCategories(category);
+    console.log("createEvents - After checkingCategories");
+
+    console.log("createEvents - Before checkingTalents");
+    await checkingTalents(talent, req.user.organizer);
+    console.log("createEvents - After checkingTalents");
+
+    // cari Events dengan field name
+    console.log("createEvents - Before checking existing event");
+    const check = await Events.findOne({
+      title,
+      organizer: req.user.organizer,
+    });
+
+    // apa bila check true / data Events sudah ada maka kita tampilkan error bad request dengan message judul acara sudah terdaftar
+    if (check) throw new BadRequestError("judul acara sudah terdaftar");
+
+    console.log("createEvents - Before creating event");
+    const result = await Events.create({
+      title,
+      date,
+      about,
+      tagline,
+      venueName,
+      keyPoint,
+      statusEvent: statusEvent || "Draft",
+      tickets: tickets || [],
+      image: imageId,
+      category,
+      talent,
+      organizer: req.user.organizer,
+    });
+
+    console.log("createEvents - Event created successfully");
+    return result;
+  } catch (error) {
+    console.error("Error in createEvents:", error);
+    console.error("Error stack:", error.stack);
+    throw error;
+  }
 };
 
 const getOneEvents = async (req) => {
@@ -131,14 +164,20 @@ const updateEvents = async (req) => {
     talent,
   } = req.body;
 
+  const imageId =
+    typeof image === "object" && image !== null && image._id
+      ? image._id
+      : image;
+
   // cari image, category dan talent dengan field id
-  await checkingImage(image);
+  await checkingImage(imageId);
   await checkingCategories(category);
-  await checkingTalents(talent);
+  await checkingTalents(talent, req.user.organizer);
 
   // cari event berdasarkan field id
   const checkEvent = await Events.findOne({
     _id: id,
+    organizer: req.user.organizer,
   });
 
   // jika id result false / null maka akan menampilkan error `Tidak ada acara dengan id` yang dikirim client
@@ -156,7 +195,7 @@ const updateEvents = async (req) => {
   if (check) throw new BadRequestError("judul acara sudah terdaftar");
 
   const result = await Events.findOneAndUpdate(
-    { _id: id },
+    { _id: id, organizer: req.user.organizer },
     {
       title,
       date,
@@ -166,7 +205,7 @@ const updateEvents = async (req) => {
       keyPoint,
       statusEvent,
       tickets,
-      image,
+      image: imageId,
       category,
       talent,
       organizer: req.user.organizer,
@@ -187,7 +226,7 @@ const deleteEvents = async (req) => {
 
   if (!result) throw new NotFoundError(`Tidak ada acara dengan id :  ${id}`);
 
-  await result.remove();
+  await Events.findOneAndDelete({ _id: id, organizer: req.user.organizer });
 
   return result;
 };
